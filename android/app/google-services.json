@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "172258767237",
+    "project_id": "atv-pog3-livre",
+    "storage_bucket": "atv-pog3-livre.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172258767237:android:4a71128d3592e43e2654ec",
+        "android_client_info": {
+          "package_name": "com.example.projeto_livre"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172258767237-su6k2k2iuo3jodq52fhu39tnvkn3bi0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG3T-oiLMk3yUBkUy5lNCisw8p80w8Hkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172258767237-su6k2k2iuo3jodq52fhu39tnvkn3bi0r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
