@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_livre/PokedexScreen.dart';
 import 'package:projeto_livre/meuPokemon.dart';
-import 'package:projeto_livre/minhasBatalhas.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:projeto_livre/PokemonMaps.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeLogin extends StatelessWidget {
   const HomeLogin({Key? key}) : super(key: key);
@@ -12,6 +12,15 @@ class HomeLogin extends StatelessWidget {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushNamedAndRemoveUntil(
         '/home', (Route<dynamic> route) => false);
+  }
+
+  void abrirSitePokemon() async {
+    const url = 'https://www.pokemon.com/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Não foi possível abrir o site do Pokémon.';
+    }
   }
 
   @override
@@ -59,20 +68,27 @@ class HomeLogin extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.book),
-              title: Text('Minhas Batalhas'),
+              leading: Icon(Icons.open_in_browser),
+              title: Text('Site do Pokémon'),
+              onTap: abrirSitePokemon,
+            ),
+            ListTile(
+              leading: Icon(Icons.map),
+              title: Text('Pokémon Maps'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MinhasBatalhas(
-                      userEmail: userEmail!,
-                    ),
+                    builder: (context) => BookLocalizationScreen(),
                   ),
                 );
               },
             ),
-            // Adicione quantos ListTile quiser para representar as opções do menu
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Sair'),
+              onTap: () => deslogarFirebase(context),
+            ),
           ],
         ),
       ),
@@ -101,6 +117,10 @@ class HomeLogin extends StatelessWidget {
                       child: Text('Ir para Arena Pokémon'),
                     ),
                     SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: abrirSitePokemon,
+                      child: Text('Site do Pokémon'),
+                    ),
                   ],
                 ),
               ),

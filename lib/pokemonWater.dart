@@ -34,6 +34,7 @@ class _PokemonWaterState extends State<PokemonWater> {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final pokemonDetails = {
+        'id': jsonData['id'],
         'name': jsonData['name'],
         'type': jsonData['types'][0]['type']['name'],
         'height': jsonData['height'],
@@ -83,4 +84,3 @@ class _PokemonWaterState extends State<PokemonWater> {
     );
   }
 }
-

@@ -41,7 +41,7 @@ dependencies:
   url_launcher: ^6.1.11
   http: ^0.13.4
   cloud_firestore: ^4.8.0
-  google_maps_flutter: ^2.0.10
+  google_maps_flutter: ^2.1.1
 
 
 

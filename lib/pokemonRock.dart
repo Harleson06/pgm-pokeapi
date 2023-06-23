@@ -28,14 +28,15 @@ class _PokemonPedraState extends State<PokemonPedra> {
   }
 
   String getPokemonImageUrl(int pokemonId) {
-    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$pokemonId.png';
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemonId.png';
   }
 
-  Future<void> navigateToPokemonDetails(dynamic pokemon) async {
-    final response = await http.get(Uri.parse(pokemon['url']));
+  Future<void> navigateToPokemonDetails(String pokemonUrl) async {
+    final response = await http.get(Uri.parse(pokemonUrl));
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final pokemonDetails = {
+        'id': jsonData['id'],
         'name': jsonData['name'],
         'type': jsonData['types'][0]['type']['name'],
         'height': jsonData['height'],
@@ -67,9 +68,9 @@ class _PokemonPedraState extends State<PokemonPedra> {
       body: ListView.builder(
         itemCount: pokemonList.length,
         itemBuilder: (context, index) {
-          final pokemon = pokemonList[index]['pokemon'];
-          final pokemonId = pokemonList[index]['pokemon']['url'].split('/')[6];
-          final pokemonImageUrl = getPokemonImageUrl(int.parse(pokemonId));
+          final pokemonUrl = pokemonList[index]['pokemon']['url'];
+          final pokemonId = int.parse(pokemonUrl.split('/')[6]);
+          final pokemonImageUrl = getPokemonImageUrl(pokemonId);
 
           return ListTile(
             leading: Image.network(
@@ -77,9 +78,9 @@ class _PokemonPedraState extends State<PokemonPedra> {
               width: 50,
               height: 50,
             ),
-            title: Text(pokemon['name']),
+            title: Text(pokemonList[index]['pokemon']['name']),
             onTap: () {
-              navigateToPokemonDetails(pokemon);
+              navigateToPokemonDetails(pokemonUrl);
             },
           );
         },

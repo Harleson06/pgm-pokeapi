@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:projeto_livre/pokemonDetails.dart';
-import 'package:projeto_livre/pokemonMaps.dart';
-import 'package:flutter/services.dart';
 
 class PokemonIce extends StatefulWidget {
   final String pokemonType;
@@ -24,18 +22,21 @@ class _PokemonIceState extends State<PokemonIce> {
         final jsonData = json.decode(response.body);
         pokemonList = jsonData['pokemon'];
       });
+    } else {
+      throw Exception('Failed to load Pokemon data');
     }
   }
 
   String getPokemonImageUrl(int pokemonId) {
-    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$pokemonId.png';
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemonId.png';
   }
 
-  Future<void> navigateToPokemonDetails(dynamic pokemon) async {
-    final response = await http.get(Uri.parse(pokemon['url']));
+  Future<void> navigateToPokemonDetails(String pokemonUrl) async {
+    final response = await http.get(Uri.parse(pokemonUrl));
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final pokemonDetails = {
+        'id': jsonData['id'],
         'name': jsonData['name'],
         'type': jsonData['types'][0]['type']['name'],
         'height': jsonData['height'],
@@ -67,9 +68,9 @@ class _PokemonIceState extends State<PokemonIce> {
       body: ListView.builder(
         itemCount: pokemonList.length,
         itemBuilder: (context, index) {
-          final pokemon = pokemonList[index]['pokemon'];
-          final pokemonId = pokemonList[index]['pokemon']['url'].split('/')[6];
-          final pokemonImageUrl = getPokemonImageUrl(int.parse(pokemonId));
+          final pokemonUrl = pokemonList[index]['pokemon']['url'];
+          final pokemonId = int.parse(pokemonUrl.split('/')[6]);
+          final pokemonImageUrl = getPokemonImageUrl(pokemonId);
 
           return ListTile(
             leading: Image.network(
@@ -77,9 +78,9 @@ class _PokemonIceState extends State<PokemonIce> {
               width: 50,
               height: 50,
             ),
-            title: Text(pokemon['name']),
+            title: Text(pokemonList[index]['pokemon']['name']),
             onTap: () {
-              navigateToPokemonDetails(pokemon);
+              navigateToPokemonDetails(pokemonUrl);
             },
           );
         },

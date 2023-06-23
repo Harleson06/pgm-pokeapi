@@ -22,8 +22,6 @@ class _PokemonFireState extends State<PokemonFire> {
         final jsonData = json.decode(response.body);
         pokemonList = jsonData['pokemon'];
       });
-    } else {
-      throw Exception('Failed to load Pokemon data');
     }
   }
 
@@ -36,6 +34,7 @@ class _PokemonFireState extends State<PokemonFire> {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final pokemonDetails = {
+        'id': jsonData['id'],
         'name': jsonData['name'],
         'type': jsonData['types'][0]['type']['name'],
         'height': jsonData['height'],
